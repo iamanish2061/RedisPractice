@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RedisService {
 
+    @Autowired ObjectMapper objectMapper;
+
     private static final Logger log = LoggerFactory.getLogger(RedisService.class);
     @Autowired
     private RedisTemplate redisTemplate;
@@ -19,9 +21,8 @@ public class RedisService {
     public <T> T get(Long key, Class<T> entityClass){
         try{
             Object o= redisTemplate.opsForValue().get(key.toString());
-            ObjectMapper mapper = new ObjectMapper();
             if (o != null) {
-                return mapper.readValue(o.toString(), entityClass);
+                return objectMapper.readValue(o.toString(), entityClass);
             }else{
                 return null;
             }
@@ -33,7 +34,6 @@ public class RedisService {
 
     public void set(Long key, Object o, Long ttl){
         try{
-            ObjectMapper objectMapper = new ObjectMapper();
             String jsonVal = objectMapper.writeValueAsString(o);
             redisTemplate.opsForValue().set(key.toString(), jsonVal, ttl, TimeUnit.SECONDS);
         }catch (Exception e){

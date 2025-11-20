@@ -1,8 +1,6 @@
 package com.redisPractice.entity;
 
-import io.lettuce.core.dynamic.annotation.CommandNaming;
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 
 @Entity
 @Table(name = "student")
